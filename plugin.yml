@@ -1,0 +1,20 @@
+---
+name: WGN-ServerUI
+author: InsulatorGMan
+version: 2.3.3
+main: InsulatorGMan/WGN-ServerUI/src/InsulatorGMan/WGN-ServerUI
+api:
+- 3.0.0
+mcpe-protocol:
+- 407
+- 408
+- 428
+description: View all your servers or worlds in a list using FormAPI!
+commands:
+  ServerUI:
+    description: Get info on ServerUI
+    permission: ServerUI.info
+permissions:
+  ServerUI.info:
+    default: true
+...
