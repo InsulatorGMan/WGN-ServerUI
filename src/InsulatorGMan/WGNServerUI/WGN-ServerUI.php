@@ -1,19 +1,18 @@
 <?php
 # MADE BY:
-#  __    __                                          __        __  __  __                     
-# /  |  /  |                                        /  |      /  |/  |/  |                    
-# $$ |  $$ |  ______   _______    ______    ______  $$ |____  $$/ $$ |$$/   _______  __    __ 
-# $$  \/$$/  /      \ /       \  /      \  /      \ $$      \ /  |$$ |/  | /       |/  |  /  |
-#  $$  $$<  /$$$$$$  |$$$$$$$  |/$$$$$$  |/$$$$$$  |$$$$$$$  |$$ |$$ |$$ |/$$$$$$$/ $$ |  $$ |
-#   $$$$  \ $$    $$ |$$ |  $$ |$$ |  $$ |$$ |  $$ |$$ |  $$ |$$ |$$ |$$ |$$ |      $$ |  $$ |
-#  $$ /$$  |$$$$$$$$/ $$ |  $$ |$$ \__$$ |$$ |__$$ |$$ |  $$ |$$ |$$ |$$ |$$ \_____ $$ \__$$ |
-# $$ |  $$ |$$       |$$ |  $$ |$$    $$/ $$    $$/ $$ |  $$ |$$ |$$ |$$ |$$       |$$    $$ |
-# $$/   $$/  $$$$$$$/ $$/   $$/  $$$$$$/  $$$$$$$/  $$/   $$/ $$/ $$/ $$/  $$$$$$$/  $$$$$$$ |
-#                                         $$ |                                      /  \__$$ |
-#                                         $$ |                                      $$    $$/ 
-#                                         $$/                                        $$$$$$/
+# .----------------.  .----------------.  .-----------------.
+#| .--------------. || .--------------. || .--------------. |
+#| | _____  _____ | || |    ______    | || | ____  _____  | |
+#| ||_   _||_   _|| || |  .' ___  |   | || ||_   \|_   _| | |
+#| |  | | /\ | |  | || | / .'   \_|   | || |  |   \ | |   | |
+#| |  | |/  \| |  | || | | |    ____  | || |  | |\ \| |   | |
+#| |  |   /\   |  | || | \ `.___]  _| | || | _| |_\   |_  | |
+#| |  |__/  \__|  | || |  `._____.'   | || ||_____|\____| | |
+#| |              | || |              | || |              | |
+#| '--------------' || '--------------' || '--------------' |
+# '----------------'  '----------------'  '----------------'
 
-namespace Xenophilicy\NaviCompass;
+namespace InsulatorGMan\WGNServerUI;
 
 use pocketmine\command\{Command, CommandSender, PluginCommand};
 use pocketmine\event\inventory\InventoryTransactionEvent;
@@ -26,21 +25,21 @@ use pocketmine\network\mcpe\protocol\PlaySoundPacket;
 use pocketmine\Player;
 use pocketmine\plugin\PluginBase;
 use pocketmine\utils\TextFormat as TF;
-use Xenophilicy\NaviCompass\libs\jojoe77777\FormAPI\SimpleForm;
-use Xenophilicy\NaviCompass\Task\CompassCooldownTask;
-use Xenophilicy\NaviCompass\Task\QueryTaskCaller;
-use Xenophilicy\NaviCompass\Task\TeleportTask;
-use Xenophilicy\NaviCompass\Task\TransferTask;
+use InsulatorGMan\WGNServerUI\libs\jojoe77777\FormAPI\SimpleForm;
+use InsulatorGMan\WGNServerUI\Task\CompassCooldownTask;
+use InsulatorGMan\WGNServerUI\Task\QueryTaskCaller;
+use InsulatorGMan\WGNServerUI\Task\TeleportTask;
+use InsulatorGMan\WGNServerUI\Task\TransferTask;
 
 /**
- * Class NaviCompass
- * @package Xenophilicy\NaviCompass
+ * Class WGNServerUI
+ * @package InsulatorGMan\WGNServerUI
  */
-class NaviCompass extends PluginBase implements Listener {
+class WGNServerUI extends PluginBase implements Listener {
     
     /** @var array */
     public static $settings;
-    /** @var NaviCompass */
+    /** @var WGNServerUI */
     private static $plugin;
     
     public $compassCooldown = [];
@@ -57,14 +56,14 @@ class NaviCompass extends PluginBase implements Listener {
         $this->getServer()->getPluginManager()->registerEvents($this, $this);
         $configPath = $this->getDataFolder() . "config.yml";
         if(!file_exists($configPath)){
-            $this->getLogger()->notice("It appears that this is the first time you are using NaviCompass! Before reporting that the plugin doesn't work, please be sure your config file is setup correctly.");
+            $this->getLogger()->notice("It appears that this is the first time you are using ServerUI! Before reporting that the plugin doesn't work, please be sure your config file is setup correctly.");
         }
         $this->saveDefaultConfig();
         self::$settings = $this->getConfig()->getAll();
         $configVersion = self::$settings["VERSION"];
         $pluginVersion = $this->getDescription()->getVersion();
         if(version_compare("2.3.0", $configVersion, "gt")){
-            $this->getLogger()->warning("You have updated NaviCompass to v" . $pluginVersion . " but have a config from v$configVersion! Please delete your old config for new features to be enabled and to prevent unwanted errors!");
+            $this->getLogger()->warning("You have updated ServerUI to v" . $pluginVersion . " but have a config from v$configVersion! Please delete your old config for new features to be enabled and to prevent unwanted errors!");
             $this->getServer()->getPluginManager()->disablePlugin($this);
             return;
         }
@@ -81,7 +80,7 @@ class NaviCompass extends PluginBase implements Listener {
                 if(self::$settings["Command"]["Permission"]["Enabled"]){
                     $cmd->setPermission(self::$settings["Command"]["Permission"]["Node"]);
                 }
-                $this->getServer()->getCommandMap()->register("NaviCompass", $cmd, $cmdName);
+                $this->getServer()->getCommandMap()->register("ServerUI", $cmd, $cmdName);
             }
         }else{
             $this->getLogger()->info("Command method disabled in config...");
@@ -178,8 +177,8 @@ class NaviCompass extends PluginBase implements Listener {
     }
     
     public function onCommand(CommandSender $sender, Command $command, string $label, array $args): bool{
-        if($command->getName() == "navicompass"){
-            $sender->sendMessage(TF::GRAY . "---" . TF::GOLD . " NaviCompass " . TF::GRAY . "---");
+        if($command->getName() == "ServerUI"){
+            $sender->sendMessage(TF::GRAY . "---" . TF::GOLD . " ServerUI " . TF::GRAY . "---");
             $sender->sendMessage(TF::YELLOW . "Version: " . TF::AQUA . $this->getDescription()->getVersion());
             $sender->sendMessage(TF::YELLOW . "Description: " . TF::AQUA . "View servers or worlds");
             if(self::$settings["Selector"]["Enabled"]){
