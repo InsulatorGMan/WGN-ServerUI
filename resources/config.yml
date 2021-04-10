@@ -1,0 +1,13 @@
+# ext:ServerTitle:ServerIP:ServerPort:ImageType:Path/URL
+
+# WaterDog server format:
+# wd:ServerTitle:ServerName:ImageType:Path/URL
+
+# World format
+# int:WorldTitle:WorldAlias:ImageType:Path/URL
+
+# Examples:
+# "ext:§l§6Lobby §eServer:play.xenoservers.net:19132:url:file.xenoservers.net/Resources/GitHub-Resources/navicompass/lobby.png"
+# "int:§l§cKitPvP §eServer:kitpvp"
+
+List: []
